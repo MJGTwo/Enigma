@@ -5,6 +5,9 @@
 class Node{
 
 public:
+	Node(char L);
+	Node();
+
 	char let;
 	Node* prev;
 	Node* next;
@@ -14,11 +17,19 @@ public:
 
 };
 
-
 class Row{
+public:
 	Row();
 
+	void shift();
+	void add(Node *n);
+	void link(Row &othr);
 
+
+	Node* head;
+	Node* tail;
+	Row* partner;
+	int size;
 };
 
 
@@ -28,10 +39,11 @@ class Rotor{
 public:
 
 	Rotor(int n);
+	char  operator[] ( char alph);
 
 private:
-
-	
+	Row input;
+	Row output;
 
 };
 
