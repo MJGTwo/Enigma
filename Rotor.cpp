@@ -4,7 +4,7 @@
 #include <iostream>
 using namespace std;
 
-
+int lettoval(char let);
 
 Node::Node()
 {
@@ -69,7 +69,7 @@ void Row::link(Row &othr)
 Rotor::Rotor(int num)
 {
 	string pln = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-	int temp[26];
+	string temp;
 	for (int i =0; i < 26; i++)
 	{
 		Node* tempN = new Node;
@@ -81,8 +81,7 @@ Rotor::Rotor(int num)
 
 	if (num ==1)
 	{
-		temp = "E K  M F  L G D Q  V  Z  N  T  O  W  Y  H  X  U  S  P  A I B R  CJ";
-				[4,10,12,5,11,6,3,16,21,25,13,19,14,22,24,7,23,20,18,15,0,8,1,17,2,9];
+		temp = "EKMFLGDQVZNTOWYHXUSPAIBRCJ";
 	}
 	else if (num ==2)
 	{
@@ -119,7 +118,7 @@ Rotor::Rotor(int num)
 	for (int i =0; i < temp.size(); i++)
 	{
 		Node* tempN = new Node;
-		tempN->let = temp[i];
+		tempN->num = lettoval(temp[i]);
 		output.add(tempN);
 
 	}
@@ -137,8 +136,119 @@ int Rotor::operator[]( int numb)
 	{
 		finder= finder->next;
 	}
-	string alph = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-	int i =0;
-	while ( finder->crypt->let != alph[i]) i++;
-	return i;
+	
+	return finder->crypt->num;
+}
+
+int lettoval(char let)
+{
+	if(let=='A')
+	{
+		return 0;
+	}
+	else if(let=='B')
+	{
+		return 1;	
+	}
+	else if(let=='C')
+	{
+		return 2;
+	}
+	else if(let=='D')
+	{
+		return 3;
+	}
+	else if(let=='E')
+	{
+		return 4;		
+	}
+	else if(let=='F')
+	{
+		return 5;
+	}
+	else if(let=='G')
+	{
+		return 6;		
+	}
+	else if(let=='H')
+	{
+		return 7;
+	}
+	else if(let=='I')
+	{
+		return 8;		
+	}
+	else if(let=='J')
+	{
+		return 9;
+	}
+	else if(let=='K')
+	{
+		return 10;		
+	}
+	else if(let=='L')
+	{
+		return 11;
+	}
+	else if(let=='M')
+	{
+		return 12;		
+	}
+	else if(let=='N')
+	{
+		return 13;
+	}
+	else if(let=='O')
+	{
+		return 14;		
+	}
+	else if(let=='P')
+	{
+		return 15;
+	}
+	else if(let=='Q')
+	{
+		return 16;		
+	}
+	else if(let=='R')
+	{
+		return 17;
+	}
+	else if(let=='S')
+	{
+		return 18;		
+	}
+	else if(let=='T')
+	{
+		return 19;
+	}
+	else if(let=='U')
+	{
+		return 20;		
+	}
+	else if(let=='V')
+	{
+		return 21;
+	}
+	else if(let=='W')
+	{
+		return 22;		
+	}
+	else if(let=='X')
+	{
+		return 23;
+	}
+	else if(let=='Y')
+	{
+		return 24;		
+	}
+	else if(let=='Z')
+	{
+		return 25;
+	}
+	else
+	{
+		return 0;
+	}
+
 }

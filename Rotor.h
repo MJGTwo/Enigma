@@ -40,7 +40,7 @@ class Rotor{
 public:
 
 	Rotor(int n);
-	char  operator[] ( char alph);
+	int  operator[] ( int numb);
 
 private:
 	Row input;
