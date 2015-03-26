@@ -5,13 +5,14 @@
 class Node{
 
 public:
-	Node(char L);
 	Node();
 
-	char let;
+	int num;
+
 	Node* prev;
 	Node* next;
 	Node* crypt;
+
 
 
 

@@ -4,16 +4,10 @@
 #include <iostream>
 using namespace std;
 
-Node::Node(char L):  let(L)
-{
-	prev=NULL;
-	next=NULL;
-	crypt=NULL;
-}
+
 
 Node::Node()
 {
-	let='0';
 	prev=NULL;
 	next=NULL;
 	crypt=NULL;
@@ -75,11 +69,11 @@ void Row::link(Row &othr)
 Rotor::Rotor(int num)
 {
 	string pln = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-	string temp;
-	for (int i =0; i < pln.size(); i++)
+	int temp[26];
+	for (int i =0; i < 26; i++)
 	{
 		Node* tempN = new Node;
-		tempN->let = pln[i];
+		tempN->num = i;
 		input.add(tempN);
 
 	}
@@ -87,7 +81,8 @@ Rotor::Rotor(int num)
 
 	if (num ==1)
 	{
-		temp = "EKMFLGDQVZNTOWYHXUSPAIBRCJ";
+		temp = "E K  M F  L G D Q  V  Z  N  T  O  W  Y  H  X  U  S  P  A I B R  CJ";
+				[4,10,12,5,11,6,3,16,21,25,13,19,14,22,24,7,23,20,18,15,0,8,1,17,2,9];
 	}
 	else if (num ==2)
 	{
@@ -134,13 +129,16 @@ Rotor::Rotor(int num)
 	
 }
 
-char Rotor::operator[]( char alph) 
+int Rotor::operator[]( int numb) 
 {
 	
 	Node* finder = input.head;
-	while (finder->let != alph)
+	while (finder->num != numb)
 	{
 		finder= finder->next;
 	}
-	return finder->crypt->let;
+	string alph = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+	int i =0;
+	while ( finder->crypt->let != alph[i]) i++;
+	return i;
 }
