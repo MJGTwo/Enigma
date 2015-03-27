@@ -9,15 +9,24 @@ using namespace std;
 
 int main()
 {
-
 	Rotor R1(1);
-	Rotor R2(2);
-	Rotor R3(3);
-	string test = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-	for (int i=0; i < test.size(); i++)
+	for (int i=0; i < 26; i++)
 	{
 
-		cout << test[i] <<": " << R1[test[i]] << ", " << R2[test[i]]<<endl;
+		cout << i <<": " << R1[i] <<endl;
 	}
 
+	R1.shift();
+	for (int i=0; i < 26; i++)
+	{
+
+		cout << i <<": " << R1[i] <<endl;
+	}
+	R1.shift(5);
+	R1.shift(20);
+	for (int i=0; i < 26; i++)
+	{
+
+		cout << i <<": " << R1[i] <<endl;
+	}
 }

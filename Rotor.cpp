@@ -13,6 +13,13 @@ Node::Node()
 	crypt=NULL;
 }
 
+Node::~Node()
+{
+	prev=NULL;
+	next=NULL;
+	crypt=NULL;
+}
+
 Row::Row()
 {
 	size=0;
@@ -21,53 +28,99 @@ Row::Row()
 	partner=NULL;
 }
 
+Row::~Row()
+{
+
+
+	partner=NULL;
+
+	Node * ptr = head;
+
+	deconHelper(ptr);
+}
+
+void Row::deconHelper(Node*ptr)
+{
+	if (ptr->next !=head && ptr->next != NULL)
+	{
+		deconHelper(ptr->next);
+		
+	}
+	delete ptr;
+	size--;
+	ptr=NULL;
+
+}
 
 void Row::add(Node* n)
 {
 	if (size==0)
 	{
 		head = n;
-		tail = n;
+		tail = head;
 		size++;
 	}
 	else
 	{
 		tail->next=n;
+		tail->next->prev=tail;
+
 		head->prev=n;
+		head->prev->next=head;
+
 		tail=n;
 		size++;
 	}
 }
 
-void Row::shift()
+void Rotor::shift()	///function shifts the crypt pairs by one and then relinks them.
 {
-	partner->tail=partner->head;
-	partner->head=partner->head->next;
-	link(*partner);
+	shift(1);
 }
 
-void Row::link(Row &othr)
+void Rotor::shift(int n) // function shifts the cryp pairs by n and then relinks them.
 {
+	int i =0;
+	while (i < n)
+	{
+		output.tail=output.head;
+		output.head=output.head->next;
+		i++;
+	}
+	input.link(output);
+}
+
+
+void Row::link(Row &othr) //// Function pairs two rows together.
+{
+	if (partner!=NULL)	////If already linked, delink and then link
+	{
+		Node *temp =partner->head;
+		do{
+			temp->crypt=NULL;
+			temp=temp->next;
+		}while (temp != partner->head);
+
+	}
 	partner=&othr;
 	othr.partner=this;
 	Node * thisitr=this->head;
 	Node * othritr=othr.head;
 	if (this->size != othr.size) return;
-	thisitr->crypt = othritr;
-	othritr->crypt = thisitr;
-	thisitr=thisitr->next;
-	othritr=othritr->next;
-	while (thisitr != this->tail->next)
-	{
+	do{
 		thisitr->crypt = othritr;
 		othritr->crypt = thisitr;
 		thisitr=thisitr->next;
 		othritr=othritr->next;
-	}
+	}while (thisitr != this->tail->next);
+	
+
+	thisitr=NULL;
+	othritr=NULL;
 }
 
-Rotor::Rotor(int num)
-{
+Rotor::Rotor(int num)	////the strings are the roginal values of the Enigma Rotors. Using a helper function 
+{						////they are turned into numbers for incryption and decryption
 	string pln = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 	string temp;
 	for (int i =0; i < 26; i++)
@@ -75,6 +128,7 @@ Rotor::Rotor(int num)
 		Node* tempN = new Node;
 		tempN->num = i;
 		input.add(tempN);
+		tempN=NULL;
 
 	}
 	
@@ -120,6 +174,7 @@ Rotor::Rotor(int num)
 		Node* tempN = new Node;
 		tempN->num = lettoval(temp[i]);
 		output.add(tempN);
+		tempN=NULL;
 
 	}
 
@@ -140,7 +195,7 @@ int Rotor::operator[]( int numb)
 	return finder->crypt->num;
 }
 
-int lettoval(char let)
+int lettoval(char let) ///This converts letters into their position in the alphabet starting with A=0
 {
 	if(let=='A')
 	{
