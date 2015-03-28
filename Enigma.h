@@ -2,24 +2,43 @@
 #define __ENIGMA_H__
 #include <vector>
 #include "Rotor.h"
+#include <string>
 using namespace std;
+
+class Counter{
+
+public:
+	Counter(int i);
+	vector<int> move();
+private:
+
+	vector <int> counts;
+
+
+};
+
+
 
 class Enigma{
 
 public:
 	Enigma();
 	~Enigma();
-	void ShowRotorValues(int n);
-	void encrypt(string text);
-	void decrypt(string text){encrypt(text);}
+	string encrypt();
+	string decrypt(string text);
 
 private:
 	void Deconhelper(Rotor*R);
 	void makeBankE();
+	void makeArmyE();
+	void makeNavalE();
+	void makeANavalE();
+
+	void basic(int i);
 
 	Rotor* front;
 	Rotor* back;
-	vector<int> offset;
+	Counter* c;
 	int size;
 
 	Reflector* RF;

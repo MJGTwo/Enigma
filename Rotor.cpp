@@ -77,6 +77,7 @@ void Rotor::shift()	///function shifts the crypt pairs by one and then relinks t
 
 void Rotor::shift(int n) // function shifts the cryp pairs by n and then relinks them.
 {
+	if (n==0) return;
 	int i =0;
 	while (i < n)
 	{
@@ -87,39 +88,7 @@ void Rotor::shift(int n) // function shifts the cryp pairs by n and then relinks
 	input.link(output);
 }
 
-void Rotor::move()
-{
-	move(1);
-}
 
-void Rotor::move(int n)
-{
-	if (n==0) return;
-	int trans0,trans1;
-	Node* helper0;
-	Node *helper1;
-
-	for (int i =0 ; i < n; i ++)
-	{
-		trans0=input.head->num;
-		trans1=output.head->num;
-
-		helper0=input.head;
-		helper1=output.head;
-		for (int j =0; j < 25; j++)
-		{
-			helper0->num=helper0->next->num;
-			helper1->num=helper1->next->num;
-			helper0=helper0->next;
-			helper1=helper1->next;
-		}
-
-		helper0->num = trans0;
-		helper1->num = trans1;
-
-
-	}
-}
 
 void Row::link(Row &othr) //// Function pairs two rows together.
 {
@@ -264,6 +233,17 @@ int Rotor::operator[]( int numb)
 {
 	
 	Node* finder = input.head;
+	while (finder->num != numb)
+	{
+		finder= finder->next;
+	}
+	
+	return finder->crypt->num;
+}
+
+int Rotor::operator()(int numb)
+{
+	Node * finder = output.head;
 	while (finder->num != numb)
 	{
 		finder= finder->next;

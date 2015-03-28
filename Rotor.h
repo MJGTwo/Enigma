@@ -63,12 +63,11 @@ public:
 	Rotor(){}
 	Rotor(int n);
 	int  operator[] ( int numb);	
+	int  operator()(int numb);
 
 	void shift();
 	void shift(int n);
 
-	void move();
-	void move(int n);
 
 	void print() const;
 

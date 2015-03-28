@@ -2,6 +2,7 @@
 #include "Enigma.h"
 #include <utility>
 #include <string>
+#include <vector>
 #include <iostream>
 using namespace std;
 
@@ -10,5 +11,10 @@ using namespace std;
 
 int main()
 {
-	Enigma();
+	
+	string tester;
+	Enigma machine0;
+	tester = machine0.encrypt();
+	
+
 }
