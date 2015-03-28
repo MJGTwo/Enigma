@@ -8,11 +8,21 @@ class Enigma{
 
 public:
 	Enigma();
+	~Enigma();
+	void ShowRotorValues(int n);
+	void encrypt(string text);
+	void decrypt(string text){encrypt(text);}
 
 private:
+	void Deconhelper(Rotor*R);
+	void makeBankE();
 
-	vector<Rotor> gears;
+	Rotor* front;
+	Rotor* back;
 	vector<int> offset;
+	int size;
+
+	Reflector* RF;
 
 };
 

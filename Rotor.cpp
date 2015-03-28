@@ -4,7 +4,7 @@
 #include <iostream>
 using namespace std;
 
-int lettoval(char let);
+int lettoval(char let) ;
 
 Node::Node()
 {
@@ -33,22 +33,18 @@ Row::~Row()
 
 
 	partner=NULL;
+	tail=NULL;
 
-	Node * ptr = head;
-
-	deconHelper(ptr);
+	deconHelper(head);
 }
 
 void Row::deconHelper(Node*ptr)
 {
-	if (ptr->next !=head && ptr->next != NULL)
-	{
-		deconHelper(ptr->next);
-		
-	}
+	if (!(ptr->next ==head || ptr->next == NULL)) deconHelper(ptr->next);
 	delete ptr;
-	size--;
 	ptr=NULL;
+
+	size--;
 
 }
 
@@ -58,6 +54,7 @@ void Row::add(Node* n)
 	{
 		head = n;
 		tail = head;
+
 		size++;
 	}
 	else
@@ -90,6 +87,39 @@ void Rotor::shift(int n) // function shifts the cryp pairs by n and then relinks
 	input.link(output);
 }
 
+void Rotor::move()
+{
+	move(1);
+}
+
+void Rotor::move(int n)
+{
+	if (n==0) return;
+	int trans0,trans1;
+	Node* helper0;
+	Node *helper1;
+
+	for (int i =0 ; i < n; i ++)
+	{
+		trans0=input.head->num;
+		trans1=output.head->num;
+
+		helper0=input.head;
+		helper1=output.head;
+		for (int j =0; j < 25; j++)
+		{
+			helper0->num=helper0->next->num;
+			helper1->num=helper1->next->num;
+			helper0=helper0->next;
+			helper1=helper1->next;
+		}
+
+		helper0->num = trans0;
+		helper1->num = trans1;
+
+
+	}
+}
 
 void Row::link(Row &othr) //// Function pairs two rows together.
 {
@@ -115,12 +145,61 @@ void Row::link(Row &othr) //// Function pairs two rows together.
 	}while (thisitr != this->tail->next);
 	
 
-	thisitr=NULL;
-	othritr=NULL;
 }
+
+Row::Row(int i)
+{
+	int num = i;
+	string temp;
+	if (num ==1)
+	{
+		temp = "EKMFLGDQVZNTOWYHXUSPAIBRCJ";
+	}
+	else if (num ==2)
+	{
+		temp = "AJDKSIRUXBLHWTMCQGZNPYFVOE";
+	}
+	else if (num ==3 )
+	{
+		temp = "BDFHJLCPRTXVZNYEIWGAKMUSQO";
+	}
+	else if (num ==4 )
+	{
+		temp = "ESOVPZJAYQUIRHXLNFTGKDCMWB";
+	}
+	else if (num == 5)
+	{
+		temp = "VZBRGITYUPSDNHLXAWMJQOFECK";
+	}
+	else if (num == 6)
+	{
+		temp = "JPGVOUMFYQBENHZRDKASXLICTW";
+	}
+	else if (num == 7)
+	{
+		temp = "NZJHGRCXMYSWBOUFAIVLPEKQDT";
+	}
+	else if (num == 8)
+	{
+		temp = "FKQHTLXOCBJSPDZRAMEWNIUYGV";
+	}
+	else
+	{
+		temp = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+	}
+	for (int i =0; i < temp.size(); i++)
+	{
+		Node* tempN = new Node;
+		tempN->num = lettoval(temp[i]);
+		add(tempN);
+
+	}
+}
+
 
 Rotor::Rotor(int num)	////the strings are the roginal values of the Enigma Rotors. Using a helper function 
 {						////they are turned into numbers for incryption and decryption
+	next=prev=NULL;
 	string pln = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 	string temp;
 	for (int i =0; i < 26; i++)
@@ -128,7 +207,6 @@ Rotor::Rotor(int num)	////the strings are the roginal values of the Enigma Rotor
 		Node* tempN = new Node;
 		tempN->num = i;
 		input.add(tempN);
-		tempN=NULL;
 
 	}
 	
@@ -174,7 +252,6 @@ Rotor::Rotor(int num)	////the strings are the roginal values of the Enigma Rotor
 		Node* tempN = new Node;
 		tempN->num = lettoval(temp[i]);
 		output.add(tempN);
-		tempN=NULL;
 
 	}
 
@@ -192,6 +269,63 @@ int Rotor::operator[]( int numb)
 		finder= finder->next;
 	}
 	
+	return finder->crypt->num;
+}
+ void Rotor::print() const
+ {
+ 	string trans = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+ 	string line(4*26+1,'-');
+ 	Node* iItr = input.head;
+ 	Node* oItr = output.head;
+ 	cout << line<<endl;
+ 	cout <<"|";
+ 	do{
+ 		cout << " "<< trans[iItr->num] << " |";
+
+ 		iItr=iItr->next;
+ 	}while(iItr!=input.head);
+ 	cout<< endl<<"|";
+ 	do{
+ 		cout << " "<< trans[oItr->num] << " |";
+ 		oItr=oItr->next;
+ 	}while(oItr!=output.head);
+ 	cout<< endl<<line<<endl;
+ 	
+
+ }
+
+Reflector::Reflector()
+{
+	int i =0;
+	string plain = "ABCDEFGIJKMTV";
+	string B = "YRUHQSLPXNOZW";
+	for (; i < 13; i++)
+	{
+		Node* temp = new Node;
+		temp->num=lettoval(plain[i]);
+		board.add(temp);
+	}
+	int j =0;
+	Node* ptr = board.head;
+	for (; j < 13; j++)
+	{
+		Node* temp = new Node;
+		temp->num= lettoval(B[j]);
+		ptr->crypt=temp;
+		temp->crypt=ptr;
+
+		board.add(temp);
+		ptr=ptr->next;
+	}
+}
+
+int Reflector::operator[](int n)
+{
+	Node* finder = board.head;
+	while (finder->num != n)
+	{
+		finder=finder->next;
+	}
 	return finder->crypt->num;
 }
 

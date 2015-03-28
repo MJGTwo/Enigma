@@ -1,5 +1,7 @@
 #ifndef __ROTOR_H__
 #define __ROTOR_H__
+#include <iostream>
+using namespace std;
 /*
 The Rotor class is made of two subclasses: Node and Row. The Row class is made of a 
 bidrectional list of Nodes. The Node class contains the value of the position of where it would
@@ -14,6 +16,7 @@ of the Rotor for setup.
 class Node{	////The purpose of the node class is to contain the position value link to other nodes
 	friend class Row;	
 	friend class Rotor;
+	friend class Reflector;
 public:
 	Node();
 	~Node();
@@ -32,44 +35,63 @@ private:
 
 class Row{
 	friend class Rotor;
+	friend class Reflector;
 public:
 	Row();
 	~Row();
-
+	Row(int i);
 	
 
 private:
 	
 	void add(Node *n);		////Adds a node to the row and creates a bidrectional list
 	void link(Row &othr);	////links two rows together
-
+	void deconHelper(Node*ptr); ///helper function to deconstruct
 
 	Node* head;
 	Node* tail;
 	Row* partner;
 	int size;
-	void deconHelper(Node*ptr); ///helper function to deconstruct
+
 };
 
 
 
 class Rotor{
-
+	friend class Enigma;
 public:
-
+	Rotor(){}
 	Rotor(int n);
-	~Rotor(){}
 	int  operator[] ( int numb);	
-	
+
 	void shift();
 	void shift(int n);
+
+	void move();
+	void move(int n);
+
+	void print() const;
 
 private:
 	Row input;
 	Row output;
+	Rotor* next;
+	Rotor* prev;
 
 };
 
+class Reflector{
 
+	friend class Enigma;
+public:
+	Reflector();
+	int operator[](int n);
+
+private:
+
+	Row board;
+
+
+};
 
 #endif
