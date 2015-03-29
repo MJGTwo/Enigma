@@ -59,6 +59,7 @@ Enigma::Enigma()
 			input=0;
 		}
 	}
+	input == -1? made = false: made = true;
 }
 Enigma::~Enigma()
 {

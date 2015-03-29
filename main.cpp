@@ -11,10 +11,15 @@ using namespace std;
 
 int main()
 {
-	
+	bool flag = true;
 	string tester;
-	Enigma machine0;
-	tester = machine0.encrypt();
+	do
+	{
+		Enigma machine0;
+		flag= machine0.getMade();
+		if (flag) tester = machine0.encrypt();
+	}while (flag);
+
 	
 
 }

@@ -26,6 +26,7 @@ public:
 	~Enigma();
 	string encrypt();
 	string decrypt(string text);
+	const bool getMade() const {return made;}
 
 private:
 	void Deconhelper(Rotor*R);
@@ -41,6 +42,7 @@ private:
 	Counter* c;
 	int size;
 
+	bool made;
 	Reflector* RF;
 
 };
